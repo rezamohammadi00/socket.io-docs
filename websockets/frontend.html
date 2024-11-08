@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WebSockets</title>
+</head>
+<body>
+    <h1>WebSockets Client</h1>
+    <input type="text" id="input" placeholder="Enter a message">
+    <button id="send">Send</button>
+    <h2 id="output"></h2>
+    <script>
+        const ws = new WebSocket("ws://localhost:8080");  // websocket is a protocol that allows for full-duplex communication between the client and the server
+        // ws://localhost:8080 is the url of the websocket server.
+
+        ws.onmessage = (event) => {   // ws.onmessage is an event listener that listens for messages from the server
+            
+            //the event object contains the data sent by the server (e.g. data , origin, source, target, type)
+            
+            console.log(event.data);
+            // console.log(event.origin);
+            // console.log(event.source);
+            // console.log(event.target);
+            // console.log(event.type);
+
+            
+            const output = document.getElementById("output");
+            output.textContent = event.data;
+        };
+
+
+        document.getElementById("send").onclick = () => {
+            const input = document.getElementById("input");
+            ws.send(JSON.stringify(input.value));    //ws.send() is used to send a message to the server.   //tip: argument can be a string, can not be an object or an array and boolean.
+            input.value = "";
+        };
+    </script>
+</body>
+</html>
